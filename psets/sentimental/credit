@@ -1,0 +1,75 @@
+from cs50 import get_int, get_string
+
+
+def main():
+    res = 0
+    number = get_int("Number: ")
+    getdigit(number)
+
+
+def getnumber():
+    num = get_int("Number: ")
+    if num <= 0:
+        return getnumber()
+    elif num is None:
+        return getnumber()
+    else:
+        return num
+
+
+def getdigit(num):
+    max = 16
+    a = [0] * (max + 2)
+    ec, oc = 0, 0
+    odd = [0] * (int(max / 2) + 1)
+    evensum, oddsum = 0, 0
+    
+    a[0] = 0
+    for i in range(1, max+1):
+        digit = 10**i
+        predigit = 10**(i-1)
+        a[i] = int((num % digit - num % predigit) / predigit)
+        
+    for i in range(1, max+1):
+        if i % 2 == 1:
+            evensum += a[i]
+        else:
+            odd[oc] = a[i]
+            oc += 1
+            
+    for i in range(oc):
+        if (odd[i] * 2) >= 10:
+            evensum += (odd[i] * 2) - 9
+        else:
+            oddsum += odd[i] * 2
+            
+    if (oddsum + evensum) % 10 == 0:
+        if (a[16] + a[15] + a[14]) == 0:
+            if a[13]:
+                print("VISA")
+            else:
+                print("INVALID")
+        elif a[16] == 0:
+            if (a[15] == 3) and (a[14] == 4 or a[14] == 7):
+                print("AMEX")
+            else:
+                print("INVALID")
+        elif a[16] > 0:
+            if a[16] == 4:
+                print("VISA")
+            elif a[16] == 5:
+                if a[15] >= 6:
+                    print("INVALID")
+                elif a[15] >= 1 or a[15] <= 5:
+                    print("MASTERCARD")
+                else:
+                    print("INVALID")
+            else:
+                print("INVALID")
+        else:
+            print("INVALID")
+    else:
+        print("INVALID")
+
+
+main()
